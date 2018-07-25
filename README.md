@@ -2,7 +2,7 @@
 
 ## Maintained by: [MariaDB](https://mariadb.com/)
 
-This is the Git repo of the [MariaDB Service "Official Images"](https://github.com/mariadb-corporation/mariadb-server-docker) for [mariadb](https://hub.docker.com/r/mariadb). 
+This is the Git repo of the [MariaDB Server "Official Images"](https://github.com/mariadb-corporation/mariadb-server-docker) for [mariadb](https://hub.docker.com/r/mariadb). 
 
 ---
 
