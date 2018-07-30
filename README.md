@@ -8,3 +8,5 @@ This is the Git repo of the [MariaDB Server "Official Images"](https://github.co
 
 -	[Travis CI:  
 	![build status badge](https://img.shields.io/travis/mariadb-corporation/mariadb-server-docker/master.svg)](https://travis-ci.org/mariadb-corporation/mariadb-server-docker/branches)
+
+	
