@@ -21,7 +21,7 @@ script:
     (
       set -Eeuo pipefail
       set -x
-      docker build -t "$image"
+      docker build -t "$image" .
       ~/mariadb-docker-images/test/run.sh "$image"
     )
 
