@@ -48,7 +48,6 @@ RUN set -ex; \
 
 RUN mkdir /docker-entrypoint-initdb.d
 
-# install "apt-transport-https" for Percona's repo (switched to https-only)
 # install "pwgen" for randomizing passwords
 # install "tzdata" for /usr/share/zoneinfo/
 RUN apt-get update && apt-get install -y --no-install-recommends \
@@ -67,17 +66,8 @@ ENV GPG_KEYS \
 # uid           [ unknown] MariaDB Signing Key <signing-key@mariadb.org>
 # sub   rsa4096 2016-03-30 [E]
 # for MariaDB 10+
-	177F4010FE56CA3336300305F1656F24C74CD1D8 \
-# pub   1024D/CD2EFD2A 2009-12-15
-#       Key fingerprint = 430B DF5C 56E7 C94E 848E  E60C 1C4C BDCD CD2E FD2A
-# uid                  Percona MySQL Development Team <mysql-dev@percona.com>
-# sub   2048g/2D607DAF 2009-12-15
-	430BDF5C56E7C94E848EE60C1C4CBDCDCD2EFD2A \
-# pub   4096R/8507EFA5 2016-06-30
-#       Key fingerprint = 4D1B B29D 63D9 8E42 2B21  13B1 9334 A25F 8507 EFA5
-# uid                  Percona MySQL Development Team (Packaging key) <mysql-dev@percona.com>
-# sub   4096R/4CAC6D72 2016-06-30
-	4D1BB29D63D98E422B2113B19334A25F8507EFA5
+	177F4010FE56CA3336300305F1656F24C74CD1D8
+
 RUN set -ex; \
 	export GNUPGHOME="$(mktemp -d)"; \
 	for key in $GPG_KEYS; do \
@@ -93,7 +83,7 @@ ENV MARIADB_MAJOR 10.1
 ENV MARIADB_VERSION 1:10.1.36+maria-1~bionic
 
 RUN set -e;\
-	echo "deb http://ftp.osuosl.org/pub/mariadb/repo/$MARIADB_MAJOR/ubuntu bionic main" > /etc/apt/sources.list.d/mariadb.list; \
+	echo "deb http://downloads.mariadb.com/MariaDB/mariadb-$MARIADB_MAJOR/repo/ubuntu bionic main" > /etc/apt/sources.list.d/mariadb.list; \
 	{ \
 		echo 'Package: *'; \
 		echo 'Pin: release o=MariaDB'; \
@@ -113,7 +103,6 @@ RUN set -ex; \
 	apt-get update; \
 	apt-get install -y \
 		"mariadb-server=$MARIADB_VERSION" \
-# percona-xtrabackup/mariadb-backup is installed at the same time so that `mysql-common` is only installed once from just mariadb repos
 		$backupPackage \
 		socat \
 	; \
