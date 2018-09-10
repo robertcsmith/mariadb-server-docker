@@ -10,14 +10,14 @@ This is the Git repo of docker images for MariaDB Server, [mariadb-server-docker
 ---
 
 ### Installation
-Include the the version number as a docker tag. 
+Include the the version number as a docker tag.
 
 To pull MariaDB Server version 10.3 run the following command:
 ```
-docker pull mariadb/mariadb-server-docker:10.3
+docker pull mariadb/server:10.3
 ```
 
 To run MariaDB Server version 10.3 run the following command:
 ```
-docker run mariadb/mariadb-server-docker:10.3
+docker run mariadb/server:10.3
 ```
