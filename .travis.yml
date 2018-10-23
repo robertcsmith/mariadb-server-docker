@@ -30,7 +30,7 @@ script:
       echo "clair_ip = $clair_ip"
       echo "scanner_ip = $scanner_ip"
       docker cp whitelist.yml clair-scanner:/whitelist.yml
-      docker exec -it clair-scanner clair-scanner --ip ${scanner_ip} --clair=http://${clair_ip}:6060 -t High -w whitelist.yml $image
+      docker exec -it clair-scanner clair-scanner --ip ${scanner_ip} --clair=http://${clair_ip}:6060 -t High -w /whitelist.yml $image
     )
 
 after_script:
