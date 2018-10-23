@@ -80,7 +80,7 @@ RUN set -ex; \
 
 # bashbrew-architectures: amd64 arm64v8 ppc64le
 ENV MARIADB_MAJOR 10.1
-ENV MARIADB_VERSION 1:10.1.36+maria-1~bionic
+#ENV MARIADB_VERSION 1:10.1.36+maria-1~bionic
 
 RUN set -e;\
 	echo "deb http://downloads.mariadb.com/MariaDB/mariadb-$MARIADB_MAJOR/repo/ubuntu bionic main" > /etc/apt/sources.list.d/mariadb.list; \
@@ -102,7 +102,7 @@ RUN set -ex; \
 	backupPackage='mariadb-backup-10.1'; \
 	apt-get update; \
 	apt-get install -y \
-		"mariadb-server=$MARIADB_VERSION" \
+		"mariadb-server" \
 		$backupPackage \
 		socat \
 	; \
