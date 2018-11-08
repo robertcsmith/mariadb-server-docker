@@ -15,7 +15,7 @@ RUN mkdir -p /tmp/bookstore && \
 	mkdir -p /tmp/bookstore/csv && \
 	apt-get update && \
 	apt-get -y install curl && \
-	curl https://downloads.mariadb.com/sample-data/books5000light.tar --output /tmp/bookstore/csv/bookstore.tar && \
+	curl https://downloads.mariadb.com/sample-data/books5000light2.tar --output /tmp/bookstore/csv/bookstore.tar && \
 	tar -vxf /tmp/bookstore/csv/bookstore.tar --directory /tmp/bookstore/csv/ && \
 	cd /tmp/bookstore/csv/ && \
 	gunzip -v *.gz && \
