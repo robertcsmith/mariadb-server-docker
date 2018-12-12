@@ -41,7 +41,7 @@ RUN set -ex; \
 	rm -r "$GNUPGHOME" /usr/local/bin/gosu.asc; \
 	\
 	chmod +x /usr/local/bin/gosu; \
-# verify that the binary works
+    # verify that the binary works
 	gosu nobody true; \
 	\
 	apt-get purge -y --auto-remove $fetchDeps
@@ -78,7 +78,6 @@ RUN set -ex; \
 	rm -r "$GNUPGHOME"; \
 	apt-key list
 
-# bashbrew-architectures: amd64 arm64v8 ppc64le
 ENV MARIADB_MAJOR 10.3
 #ENV MARIADB_VERSION 1:10.3.10+maria~bionic
 
@@ -99,34 +98,34 @@ RUN set -ex; \
 		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password password 'unused'; \
 		echo "mariadb-server-$MARIADB_MAJOR" mysql-server/root_password_again password 'unused'; \
 	} | debconf-set-selections; \
-	backupPackage='mariadb-backup'; \
 	apt-get update; \
 	apt-get install -y \
-		"mariadb-server" \
-		$backupPackage \
+		mariadb-server \
+		mariadb-backup \
 		socat \
 	; \
 	rm -rf /var/lib/apt/lists/*; \
-# comment out any "user" entires in the MySQL config ("docker-entrypoint.sh" or "--user" will handle user switching)
+    # comment out any "user" entires in the MySQL config ("docker-entrypoint.sh" or "--user" will handle user switching)
 	sed -ri 's/^user\s/#&/' /etc/mysql/my.cnf /etc/mysql/conf.d/*; \
-# purge and re-create /var/lib/mysql with appropriate ownership
+    # purge and re-create /var/lib/mysql with appropriate ownership
 	rm -rf /var/lib/mysql; \
 	mkdir -p /var/lib/mysql /var/run/mysqld; \
 	chown -R mysql:mysql /var/lib/mysql /var/run/mysqld; \
-# ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
+    # ensure that /var/run/mysqld (used for socket and lock files) is writable regardless of the UID our mysqld instance ends up having at runtime
 	chmod 777 /var/run/mysqld; \
-# comment out a few problematic configuration values
+    # comment out a few problematic configuration values
 	find /etc/mysql/ -name '*.cnf' -print0 \
 		| xargs -0 grep -lZE '^(bind-address|log)' \
 		| xargs -rt -0 sed -Ei 's/^(bind-address|log)/#&/'; \
-# don't reverse lookup hostnames, they are usually another container
+    # don't reverse lookup hostnames, they are usually another container
 	echo '[mysqld]\nskip-host-cache\nskip-name-resolve' > /etc/mysql/conf.d/docker.cnf
 
 VOLUME /var/lib/mysql
 
-COPY docker-entrypoint.sh /usr/local/bin/
-RUN ln -s usr/local/bin/docker-entrypoint.sh / # backwards compat
+COPY --chown="mysql:app" files/docker-entrypoint.sh /usr/local/bin/
+
 ENTRYPOINT ["docker-entrypoint.sh"]
 
 EXPOSE 3306
+
 CMD ["mysqld"]
